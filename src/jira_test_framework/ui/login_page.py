@@ -5,16 +5,16 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 
-class UiService():
+class LoginPage():
     base_url = "https://automat-ct.atlassian.net/jira/your-work"
     username_name_locator = "username"
     password_name_locator = "password"
 
     def __init__(self, driver):
         self.driver = driver
+        self.driver.get(self.base_url)
 
     def login(self, username, password):
-        self.driver.get(self.base_url)
         self.set_details(username, password)
         # return self.driver
 
