@@ -8,8 +8,6 @@ from src import logger
 
 
 class LoginPage():
-    # logger = get_logger()
-
     base_url = "https://automat-ct.atlassian.net/jira/your-work"
     username_name_locator = "username"
     password_name_locator = "password"

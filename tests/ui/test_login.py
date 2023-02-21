@@ -5,15 +5,13 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
 from src.jira_test_framework.ui.login_page import LoginPage
+from tests import logger
 from tests.ui.driver_factory import get_chrome_driver
-from tests.ui.ui_utils import get_logger
 
 # I'll take it out to constant file if it will be necessary
 USERNAME = "itzikv3@gmail.com"
 PASSWORD = "itzikpass"
 INVALID_USERNAME = "inavlid_username"
-
-logger = get_logger()
 
 
 # @pytest.fixture it's like before test - return driver
@@ -45,6 +43,5 @@ def test_invalid_username_ui_login(driver):
 
     assert continue_element.text == "Continue"
     logger.info("login with ui not successfully")
-
 
 # def test_invalid_password_login_ui():
