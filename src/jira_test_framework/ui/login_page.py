@@ -4,11 +4,11 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
 
-from src.jira_test_framework.utils import get_logger
+from src import logger
 
 
 class LoginPage():
-    logger = get_logger()
+    # logger = get_logger()
 
     base_url = "https://automat-ct.atlassian.net/jira/your-work"
     username_name_locator = "username"
@@ -17,10 +17,10 @@ class LoginPage():
     def __init__(self, driver):
         self.driver = driver
         self.driver.get(self.base_url)
-        self.logger.info("open url: " + self.base_url)
+        logger.info("open url: " + self.base_url)
 
     def login(self, username, password):
-        self.logger.info("start login process")
+        logger.info("start login process")
         self.set_details(username, password)
 
     def set_details(self, username, password):
@@ -32,7 +32,7 @@ class LoginPage():
             EC.visibility_of_element_located((By.NAME, self.username_name_locator)))
         username_element.send_keys(username)
         username_element.send_keys(Keys.RETURN)
-        self.logger.info("username: " + username + " was set")
+        logger.info("username: " + username + " was set")
 
     # this method can execute only after set_username()
     def set_password(self, password):
@@ -40,4 +40,4 @@ class LoginPage():
             EC.visibility_of_element_located((By.NAME, self.password_name_locator)))
         password_element.send_keys(password)
         password_element.send_keys(Keys.RETURN)
-        self.logger.info("password: " + password + " was set")
+        logger.info("password: " + password + " was set")
