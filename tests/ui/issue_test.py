@@ -1,3 +1,5 @@
+import time
+
 import pytest
 
 from src.jira_test_framework.ui.dashboard_page import DashboardPage
@@ -18,9 +20,15 @@ def driver():
 def test_create_issue(driver):
     login(driver)
     dashboard_page = DashboardPage(driver)
-    # TODO - project_name
+    # TODO - project_name!
     dashboard_page.go_to_project("ss")
+    dashboard_page.click_backlog()
+    dashboard_page.create_issue("from test ui - can delete")
+    # time.sleep(2)
+    # TODO    need assertion + delete + log
 
+
+# TODO def create_empty_issue
 
 def login(driver):
     login_page = LoginPage(driver)
