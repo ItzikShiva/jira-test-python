@@ -12,6 +12,7 @@ from tests.ui.driver_factory import get_chrome_driver
 USERNAME = "itzikv3@gmail.com"
 PASSWORD = "itzikpass"
 INVALID_USERNAME = "inavlid_username"
+INVALID_PASSWORD = "121212"
 
 
 # @pytest.fixture it's like before test - return driver
@@ -42,6 +43,19 @@ def test_invalid_username_ui_login(driver):
         EC.visibility_of_element_located((By.XPATH, continue_xpath_locator)))
 
     assert continue_element.text == "Continue"
-    logger.info("login with ui not successfully")
+    logger.info("username: " + INVALID_USERNAME + " incorrect")
 
-# def test_invalid_password_login_ui():
+
+def test_invalid_password_login_ui(driver):
+    login_page = LoginPage(driver)
+    login_page.login(USERNAME, INVALID_PASSWORD)
+
+    help_logging_in_xpath_locator = "//a[text()='logging in']"
+    help_logging_in_element = WebDriverWait(driver, 20).until(
+        EC.visibility_of_element_located((By.XPATH, help_logging_in_xpath_locator)))
+
+    assert help_logging_in_element.text == "logging in"
+    logger.info("password: " + INVALID_PASSWORD + " incorrect")
+
+    # try to put filename in global log
+    # logger.info(os.path.basename(__file__) + " password: " + INVALID_PASSWORD + " incorrect")
