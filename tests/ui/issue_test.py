@@ -1,6 +1,7 @@
 import time
 
 import pytest
+from selenium import webdriver
 
 from src.jira_test_framework.ui.dashboard_page import DashboardPage
 from src.jira_test_framework.ui.login_page import LoginPage
@@ -13,6 +14,9 @@ PASSWORD = "itzikpass"
 @pytest.fixture
 def driver():
     driver = get_chrome_driver()
+    # options = webdriver.ChromeOptions()
+    # options.add_experimental_option('excludeSwitches', ['enable-logging'])
+    # driver = webdriver.Chrome(executable_path='C:\Drivers\chromedriver\chromedriver.exe', options=options)
     yield driver
     driver.close()
 
@@ -23,9 +27,12 @@ def test_create_issue(driver):
     # TODO - project_name!
     dashboard_page.go_to_project("ss")
     dashboard_page.click_backlog()
-    dashboard_page.create_issue("from test ui - can delete")
-    # time.sleep(2)
+    issue_text = "from test ui - can delete"
+
+    # dashboard_page.create_issue(issue_text)
     # TODO    need assertion + delete + log
+    dashboard_page.delete_issue(issue_text)
+    # time.sleep(2)
 
 
 # TODO def create_empty_issue
