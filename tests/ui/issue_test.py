@@ -1,3 +1,4 @@
+import time
 from datetime import datetime
 import pytest
 
@@ -12,9 +13,6 @@ PASSWORD = "itzikpass1212"
 @pytest.fixture
 def driver():
     driver = get_chrome_driver()
-    # options = webdriver.ChromeOptions()
-    # options.add_experimental_option('excludeSwitches', ['enable-logging'])
-    # driver = webdriver.Chrome(executable_path='C:\Drivers\chromedriver\chromedriver.exe', options=options)
     yield driver
     driver.close()
 
@@ -30,8 +28,10 @@ def test_create_issue(driver):
     issue_text = "from test ui - can delete " + timestamp_str
 
     dashboard_page.create_issue(issue_text)
-    # TODO    need assertion + delete + log
-    dashboard_page.delete_issue(timestamp_str)
+    # TODO    need assertion + log
+    # two options:
+    # dashboard_page.delete_issue(timestamp_str)
+    dashboard_page.delete_issue_v1(timestamp_str)
     time.sleep(2)
 
 
