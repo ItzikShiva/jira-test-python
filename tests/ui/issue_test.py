@@ -1,3 +1,4 @@
+from datetime import datetime
 import pytest
 
 from src.jira_test_framework.ui.dashboard_page import DashboardPage
@@ -24,12 +25,14 @@ def test_create_issue(driver):
     # TODO - project_name!
     dashboard_page.go_to_project("ss")
     dashboard_page.click_backlog()
-    issue_text = "from test ui - can delete 456"
+
+    timestamp_str = str(datetime.now().timestamp())
+    issue_text = "from test ui - can delete " + timestamp_str
 
     dashboard_page.create_issue(issue_text)
     # TODO    need assertion + delete + log
-    dashboard_page.delete_issue(issue_text)
-    # time.sleep(2)
+    dashboard_page.delete_issue(timestamp_str)
+    time.sleep(2)
 
 
 # TODO def create_empty_issue
