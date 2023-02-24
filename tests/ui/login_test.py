@@ -10,7 +10,7 @@ from tests.ui.driver_factory import get_chrome_driver
 
 # I'll take it out to constant file if it will be necessary
 USERNAME = "itzikv3@gmail.com"
-PASSWORD = "itzikpass"
+PASSWORD = "itzikpass1212"
 INVALID_USERNAME = "inavlid_username"
 INVALID_PASSWORD = "121212"
 

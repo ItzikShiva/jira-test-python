@@ -1,14 +1,11 @@
-import time
-
 import pytest
-from selenium import webdriver
 
 from src.jira_test_framework.ui.dashboard_page import DashboardPage
 from src.jira_test_framework.ui.login_page import LoginPage
 from tests.ui.driver_factory import get_chrome_driver
 
 USERNAME = "itzikv3@gmail.com"
-PASSWORD = "itzikpass"
+PASSWORD = "itzikpass1212"
 
 
 @pytest.fixture
@@ -27,9 +24,9 @@ def test_create_issue(driver):
     # TODO - project_name!
     dashboard_page.go_to_project("ss")
     dashboard_page.click_backlog()
-    issue_text = "from test ui - can delete"
+    issue_text = "from test ui - can delete 456"
 
-    # dashboard_page.create_issue(issue_text)
+    dashboard_page.create_issue(issue_text)
     # TODO    need assertion + delete + log
     dashboard_page.delete_issue(issue_text)
     # time.sleep(2)
