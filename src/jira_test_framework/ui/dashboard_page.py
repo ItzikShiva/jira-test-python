@@ -1,5 +1,6 @@
 import time
 
+from selenium.common import NoSuchElementException
 from selenium.webdriver import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
@@ -41,7 +42,7 @@ class DashboardPage():
             clear_element = self.driver.find_element(By.XPATH, '//span[@aria-label="Clear"]')
             clear_element.click()
             return True
-        except:
+        except NoSuchElementException:
             return False
 
     def go_to_project(self, project_name):
