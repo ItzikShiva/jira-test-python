@@ -1,0 +1,5 @@
+USERNAME = "itzikv3@gmail.com"
+PASSWORD = "itzikpass1212"
+INVALID_USERNAME = "inavlid_username"
+INVALID_PASSWORD = "121212"
+PROJECT_NAME = "Jira Testing Project"

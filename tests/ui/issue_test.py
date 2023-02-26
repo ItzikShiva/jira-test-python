@@ -3,11 +3,9 @@ from datetime import datetime
 import pytest
 
 from src.jira_test_framework.ui.dashboard_page import DashboardPage
-from src.jira_test_framework.ui.login_page import LoginPage
+from tests.ui.constants import PROJECT_NAME
 from tests.ui.driver_factory import get_chrome_driver
-
-USERNAME = "itzikv3@gmail.com"
-PASSWORD = "itzikpass1212"
+from tests.ui.ui_utils import login
 
 
 @pytest.fixture
@@ -18,14 +16,14 @@ def driver():
 
 
 def test_create_issue(driver):
-    login(driver)
-    dashboard_page = DashboardPage(driver)
-    # TODO - project_name!
-    dashboard_page.go_to_project("ss")
-    dashboard_page.click_backlog()
-
     timestamp_str = str(datetime.now().timestamp())
     issue_text = "from test ui - can delete " + timestamp_str
+
+    login(driver)
+    dashboard_page = DashboardPage(driver)
+
+    dashboard_page.go_to_project(PROJECT_NAME)
+    dashboard_page.click_backlog()
 
     dashboard_page.create_issue(issue_text)
     # TODO    need assertion + log
@@ -34,9 +32,4 @@ def test_create_issue(driver):
     dashboard_page.delete_issue_v1(timestamp_str)
     time.sleep(2)
 
-
 # TODO def create_empty_issue
-
-def login(driver):
-    login_page = LoginPage(driver)
-    login_page.login(USERNAME, PASSWORD)

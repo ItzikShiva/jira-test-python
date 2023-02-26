@@ -22,9 +22,12 @@ class DashboardPage():
 
     # TODO - use the project_name
     def go_to_project(self, project_name):
+        project_elements_xpath_locator = f'// p[contains(text(), "{project_name}")]'
+
         project_elements = WebDriverWait(self.driver, 30).until(
             EC.visibility_of_any_elements_located(
-                (By.CSS_SELECTOR, self.project_elements_css_locator)))
+                (By.XPATH, project_elements_xpath_locator)))
+
         project_elements[0].click()
 
     def click_backlog(self):
@@ -64,7 +67,6 @@ class DashboardPage():
         # TODO - show Hod what is contain and what is exact with contains(., 456) and contains(., '456')
 
         time.sleep(2)
-
         search_element = self.driver.find_element(By.XPATH, self.search_element_locator)
         search_element.click()
         search_element.send_keys(issue_timestamp)
