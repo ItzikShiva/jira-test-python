@@ -1,10 +1,11 @@
 import time
 from datetime import datetime
 import pytest
+from selenium.webdriver.common.by import By
 
 from src.jira_test_framework.ui.dashboard_page import DashboardPage
 from src.logger import logger
-from tests.ui.constants import PROJECT_NAME
+from tests.ui.constants import PROJECT_NAME, EMPTY_ISSUE_TEXT
 from tests.ui.driver_factory import get_chrome_driver
 from tests.ui.ui_utils import login
 
@@ -37,4 +38,18 @@ def test_create_issue(driver):
     logger.info("issue: " + issue_text + " was deleted")
     time.sleep(2)
 
-# TODO def create_empty_issue
+
+def test_create_empty_issue(driver):
+    login(driver)
+    dashboard_page = DashboardPage(driver)
+
+    dashboard_page.go_to_project(PROJECT_NAME)
+    dashboard_page.click_backlog()
+
+    dashboard_page.create_issue(EMPTY_ISSUE_TEXT)
+
+    new_issue_element = driver.find_element(By.XPATH, "//textarea[@placeholder='What needs to be done?']")
+    assert int(new_issue_element.size['width']) > 0
+
+    logger.info("empty issue wasn't created")
+    time.sleep(2)
