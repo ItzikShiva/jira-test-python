@@ -2,6 +2,7 @@ import time
 
 from selenium.common import NoSuchElementException
 from selenium.webdriver import Keys
+# from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -23,24 +24,48 @@ class DashboardPage():
     def __init__(self, driver):
         self.driver = driver
 
+    def edit_issue(self, old_issue_value, new_issue_value):
+        logger.info("editing issue with value: " + old_issue_value + " to new value: " + new_issue_value)
+
+        self.search(old_issue_value).click()
+
+        issue_element = WebDriverWait(self.driver, 30).until(
+            EC.visibility_of_element_located((By.XPATH, '//h1[@data-test-id="issue.views.issue-base.foundation.summary.heading"]')))
+
+        issue_element.click()
+        issue_element_writing = self.driver.find_element(By.XPATH,
+                                                         '//h1[@data-test-id="issue.views.issue-base.foundation.summary.heading.writeable"]//textarea')
+
+        issue_element_writing.send_keys(Keys.CONTROL + "a")
+        issue_element_writing.send_keys(new_issue_value)
+        issue_element_writing.send_keys(Keys.ENTER)
+        self.clear_search_tab()
+
+    def clear_search_tab(self):
+        clear_element = self.driver.find_element(By.XPATH, '//span[@aria-label="Clear"]')
+        clear_element.click()
+
+
     def search(self, issue_value):
         # TODO - ask, i thought to write here log, but it feels to much, what do you say?
         time.sleep(2)
         search_element = self.driver.find_element(By.XPATH, self.search_element_locator)
         search_element.click()
         search_element.send_keys(issue_value)
-        search_element.click()
+        # search_element.click()
 
         time.sleep(1)
-        return self.driver.find_element(By.XPATH,
-                                        f"//*[@id='ak-main-content']//div[@data-test-id='software-backlog.card-list.id-2']//div[contains(., '{issue_value}')]")
+        # OLD return - option 1 - suddenly not work
+        # return self.driver.find_element(By.XPATH, f"//*[@id='ak-main-content']//div[@data-test-id='software-backlog.card-list.id-2']//div[contains(., '{issue_value}')]")
+        # NEW return - working
+        # return self.driver.find_element(By.XPATH,  "//span[@class='css-hdknak']//mark")
+        return self.driver.find_element(By.XPATH, '//div[@role="presentation"]//mark')
 
     def is_issue_exist(self, issue_value):
         # this is another options to check if the element finds.. - if int(is_issue_exist.size['width']) > 0
         try:
             self.search(issue_value)
-            clear_element = self.driver.find_element(By.XPATH, '//span[@aria-label="Clear"]')
-            clear_element.click()
+            self.clear_search_tab()
             return True
         except NoSuchElementException:
             return False
