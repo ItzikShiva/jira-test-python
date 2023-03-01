@@ -1,8 +1,8 @@
 import pytest
 
 from src.logger import logger
-from src.jira_test_framework.ui.dashboard_page import DashboardPage
-from tests.ui.constants import PROJECT_NAME
+from src.jira_test_framework.ui.dashboard_page.dashboard_page import DashboardPage
+from tests.ui.constants import PROJECT_NAME, ISSUE_VALUE_TO_EDIT, NEW_ISSUE_VALUE
 from tests.ui.driver_factory import get_chrome_driver
 from tests.ui.ui_utils import login
 
@@ -15,13 +15,11 @@ def driver():
 
 
 def test_edit_issue(driver):
-    ISSUE_VALUE_TO_EDIT = "test for automation - edit_issue_test! don't delete!"
-    NEW_ISSUE_VALUE = "new value from testing - please delete after test"
     login(driver)
     dashboard_page = DashboardPage(driver)
 
     dashboard_page.go_to_project(PROJECT_NAME)
-    dashboard_page.click_backlog()
+    dashboard_page.go_to_backlog()
 
     dashboard_page.create_issue(ISSUE_VALUE_TO_EDIT)
     assert dashboard_page.is_issue_exist(ISSUE_VALUE_TO_EDIT) == True
@@ -33,6 +31,4 @@ def test_edit_issue(driver):
 
     dashboard_page.delete_issue(NEW_ISSUE_VALUE)
     assert dashboard_page.is_issue_exist(NEW_ISSUE_VALUE) == False
-    logger.info("issue with value: " + NEW_ISSUE_VALUE + ". was deleted" )
-
-
+    logger.info("issue with value: " + NEW_ISSUE_VALUE + ". was deleted")

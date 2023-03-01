@@ -3,7 +3,7 @@ from datetime import datetime
 import pytest
 from selenium.webdriver.common.by import By
 
-from src.jira_test_framework.ui.dashboard_page import DashboardPage
+from src.jira_test_framework.ui.dashboard_page.dashboard_page import DashboardPage
 from src.logger import logger
 from tests.ui.constants import PROJECT_NAME, EMPTY_ISSUE_TEXT
 from tests.ui.driver_factory import get_chrome_driver
@@ -25,7 +25,7 @@ def test_create_issue(driver):
     dashboard_page = DashboardPage(driver)
 
     dashboard_page.go_to_project(PROJECT_NAME)
-    dashboard_page.click_backlog()
+    dashboard_page.go_to_backlog()
 
     dashboard_page.create_issue(issue_text)
     assert dashboard_page.is_issue_exist(issue_text) == True
@@ -44,7 +44,7 @@ def test_create_empty_issue(driver):
     dashboard_page = DashboardPage(driver)
 
     dashboard_page.go_to_project(PROJECT_NAME)
-    dashboard_page.click_backlog()
+    dashboard_page.go_to_backlog()
 
     dashboard_page.create_issue(EMPTY_ISSUE_TEXT)
 
