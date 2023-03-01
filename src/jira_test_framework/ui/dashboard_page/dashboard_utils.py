@@ -1,6 +1,9 @@
 import time
 
+from selenium.common import NoSuchElementException
 from selenium.webdriver.common.by import By
+
+from src.logger import logger
 
 
 class DashboardUtils:
@@ -12,6 +15,12 @@ class DashboardUtils:
 
     @staticmethod
     def search(driver, issue_value):
+        """
+        Searches for the given issue_value using the search box on the dashboard page.
+        :param driver: Selenium WebDriver instance
+        :param issue_value: the value to search for
+        :return: the element found after the search
+        """
         # TODO - ask, i thought to write here log, but it feels to much, what do you say?
         time.sleep(2)
         search_element = driver.find_element(By.XPATH, DashboardUtils.SEARCH_XPATH_LOCATOR)

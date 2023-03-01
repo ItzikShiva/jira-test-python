@@ -16,7 +16,6 @@ continue_xpath_locator = "//span[text()='Continue']"
 help_logging_in_xpath_locator = "//a[text()='logging in']"
 
 
-# @pytest.fixture it's like before test - return driver
 @pytest.fixture
 def driver():
     driver = get_chrome_driver()

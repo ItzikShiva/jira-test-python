@@ -88,6 +88,12 @@ class DashboardPage():
             1].click()
 
     def is_issue_exist(self, issue_value):
+        """
+        Checks if a Jira issue with the given value exists by searching for it in the dashboard search bar.
+        :param issue_value: the value of the issue to search for
+        :return: True if the issue is found, False otherwise
+        :raises NoSuchElementException: if the search bar or the issue itself cannot be found
+        """
         # this is another options to check if the element finds.. - if int(is_issue_exist.size['width']) > 0
         try:
             DashboardUtils.search(self.driver, issue_value)

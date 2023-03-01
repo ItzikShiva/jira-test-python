@@ -11,21 +11,27 @@ from tests.ui.ui_utils import login
 
 
 @pytest.fixture
+def dashboard_page(driver):
+    """
+    HOD - this method can be also regular method (not fixture), and call it regular from the tests. (like: dashboard_page = get_dashboard_page(driver) )
+    """
+    login(driver)
+    dashboard_page = DashboardPage(driver)
+    dashboard_page.go_to_project(PROJECT_NAME)
+    dashboard_page.go_to_backlog()
+    return dashboard_page
+
+
+@pytest.fixture
 def driver():
     driver = get_chrome_driver()
     yield driver
     driver.close()
 
 
-def test_create_issue(driver):
+def test_create_issue(driver, dashboard_page):
     timestamp_str = str(datetime.now().timestamp())
     issue_text = "ISSUE from ui test " + timestamp_str
-
-    login(driver)
-    dashboard_page = DashboardPage(driver)
-
-    dashboard_page.go_to_project(PROJECT_NAME)
-    dashboard_page.go_to_backlog()
 
     dashboard_page.create_issue(issue_text)
     assert dashboard_page.is_issue_exist(issue_text) == True
@@ -39,13 +45,7 @@ def test_create_issue(driver):
     time.sleep(2)
 
 
-def test_create_empty_issue(driver):
-    login(driver)
-    dashboard_page = DashboardPage(driver)
-
-    dashboard_page.go_to_project(PROJECT_NAME)
-    dashboard_page.go_to_backlog()
-
+def test_create_empty_issue(driver, dashboard_page):
     dashboard_page.create_issue(EMPTY_ISSUE_TEXT)
 
     new_issue_element = driver.find_element(By.XPATH, "//textarea[@placeholder='What needs to be done?']")
