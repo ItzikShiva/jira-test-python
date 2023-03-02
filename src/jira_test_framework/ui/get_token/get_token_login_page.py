@@ -1,5 +1,6 @@
 from selenium.webdriver.common.by import By
 
+from src.jira_test_framework.ui.get_token.authorize_page import AuthorizePage
 from src.jira_test_framework.ui.ui_utils import UIUtils
 
 
@@ -27,3 +28,4 @@ class GetTokenLoginPage():
 
         password_element.send_keys(self.PASSWORD)
         login_button.click()
+        return AuthorizePage(self.driver)
