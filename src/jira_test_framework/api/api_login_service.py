@@ -14,17 +14,23 @@ class APILoginService:
     code = None
     token = None
 
-    AUTHORIZATION_CODE = "authorization_code";
-    CLIENT_ID = "EMcZzazmRdqdGmD48zjmCD3tVielmpwN";
-    CLIENT_SECRET = "ATOAGP08RpVfirid_8ZpNWXQagGIMv_cMrGITtoODjN5GIcDlbXL-jmsZOmeUDV7wbTkC73F4623";
-    REDIRECT_URI = "https://task-day.onrender.com/";
+    AUTHORIZATION_CODE = "authorization_code"
+    CLIENT_ID = "EMcZzazmRdqdGmD48zjmCD3tVielmpwN"
+    CLIENT_SECRET = "ATOAGP08RpVfirid_8ZpNWXQagGIMv_cMrGITtoODjN5GIcDlbXL-jmsZOmeUDV7wbTkC73F4623"
+    REDIRECT_URI = "https://task-day.onrender.com/"
     driver = None
 
-    # def __init__(self, driver):
-    #     driver = driver
-
-    def get_token(self):
-        logger.info("start login proccess")
+    """
+    # Performs a series of actions to obtain an access token:
+    # 1. Logs in to a website.
+    # 2. Authorizes access.
+    # 3. Waits for the expected title to appear.
+    # 4. Obtains a code from the URL.
+    # 5. Exchanges the code for an access token.
+    # Returns the access token.
+    """
+    def get_token_process(self):
+        logger.info("start get-token process")
         self.driver = APILoginService.get_chrome_driver()
 
         get_token_login_page = GetTokenLoginPage(self.driver)
@@ -33,7 +39,6 @@ class APILoginService:
         time.sleep(4)
 
         authorize_page.authorize_access()
-        # todo - all next will be authrize page (return new AuthorizePage(driver);)
 
         self.wait_for_expected_title("Taskday")
         logger.info("login and authorization successful")
@@ -41,7 +46,7 @@ class APILoginService:
         self.code = self.get_code_from_url()
         self.driver.close()
 
-        self.get_access_token()
+        self.token = self.get_access_token()
 
     def wait_for_expected_title(self, expected_title: str) -> bool:
         """
@@ -55,6 +60,7 @@ class APILoginService:
         """
         get secret code that generate from url
         """
+        logger.info("getting CODE from url")
         url = self.driver.current_url
         hash_index = url.find("#")
         return url[url.index("code=") + 5:hash_index]
@@ -69,6 +75,7 @@ class APILoginService:
         return webdriver.Chrome(executable_path='C:\Drivers\chromedriver\chromedriver.exe', options=options)
 
     def get_access_token(self):
+        logger.info("getting token from API")
         url = "https://auth.atlassian.com/oauth/token"
 
         headers = {
@@ -84,8 +91,11 @@ class APILoginService:
         }
         response = requests.post(url, headers=headers, data=json.dumps(data))
 
-        if response.ok:
+        if response.status_code == 200:
             token = "Bearer " + response.json()["access_token"]
             return token
         else:
             return None
+
+    def get_token(self):
+        return self.token

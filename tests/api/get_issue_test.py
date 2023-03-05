@@ -1,4 +1,5 @@
 """
+todo -
 test_get_issue()
 test_invalid_issue_key()
 test_incorrect_authentication()
@@ -9,6 +10,7 @@ test_user_without_permission() - this has expected and actual not same - open bu
 from src.jira_test_framework.api.api_login_service import APILoginService
 
 """
+    from JAVA
     @Test
     public static void getIssue() {
         apiService.login();
@@ -22,4 +24,5 @@ from src.jira_test_framework.api.api_login_service import APILoginService
 
 def test_get_issue():
     api_service = APILoginService()
+    api_service.get_token_process()
     api_service.get_token()
