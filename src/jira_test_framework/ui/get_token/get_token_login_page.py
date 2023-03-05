@@ -6,17 +6,19 @@ from src.logger import logger
 
 
 class GetTokenLoginPage():
-    base_url = "https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=EMcZzazmRdqdGmD48zjmCD3tVielmpwN" \
-               "&scope=read:me&redirect_uri=https%3A%2F%2Ftask-day.onrender.com%2F&response_type=code&prompt=consent&state" \
-               "=test_itzik"
+    base_url = ""
     USERNAME = "itzikv3@gmail.com"
     PASSWORD = "itzikpass1212"
 
     def __init__(self, driver):
         self.driver = driver
 
-    def login(self):
+    def set_base_url(self, scope):
+        self.base_url = f"https://auth.atlassian.com/authorize?audience=api.atlassian.com&client_id=EMcZzazmRdqdGmD48zjmCD3tVielmpwN&scope={scope}&redirect_uri=https%3A%2F%2Ftask-day.onrender.com%2F&response_type=code&prompt=consent&state=test_itzik"
+
+    def login(self, scope="read:jira-work read:account read:me write:jira-work"):
         logger.info("start ui-login process")
+        self.set_base_url(scope)
         self.driver.get(self.base_url)
 
         self.set_username(self.USERNAME)
