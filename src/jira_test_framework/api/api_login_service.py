@@ -29,12 +29,18 @@ class APILoginService:
     # 5. Exchanges the code for an access token.
     # Returns the access token.
     """
-    def get_token_process(self):
+
+    def get_token_process(self, scope=None):
         logger.info("start get-token process")
         self.driver = APILoginService.get_chrome_driver()
 
         get_token_login_page = GetTokenLoginPage(self.driver)
-        authorize_page = get_token_login_page.login()
+
+        #todo - ask - this is another option instead of if -  authorize_page = get_token_login_page.login(None if scope is None else scope)
+        if scope is None:
+            authorize_page = get_token_login_page.login()
+        else:
+            authorize_page = get_token_login_page.login(scope)
 
         time.sleep(4)
 
