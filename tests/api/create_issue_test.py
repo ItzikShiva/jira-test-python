@@ -1,27 +1,4 @@
-"""
- private static String createdIssueKey = null;
 
-    @Test
-    public static void createIssue() {
-        apiService.login();
-
-
-        IssueRequest createIssueRequest = new IssueRequest();
-        APIUtils.insertValuesForIssueRequest(createIssueRequest, true);
-
-        Response response = issueService.createIssue(createIssueRequest);
-        Assert.assertEquals(response.code(), 201);
-        CreateIssueResponse createIssueResponse = responseToObject(response, CreateIssueResponse.class);
-        createdIssueKey = createIssueResponse.getKey();
-        logger.info("Issue created with key: " + createdIssueKey);
-
-        response = issueService.getIssue(createdIssueKey);
-        Assert.assertEquals(response.code(), 200);
-        GetIssueResponse getIssueResponse = responseToObject(response, GetIssueResponse.class);
-        Assert.assertEquals(getIssueResponse.getKey(), createdIssueKey);
-        logger.info("issue with key: " + createdIssueKey + " got successfully from server");
-    }
-"""
 import json
 
 from src.jira_test_framework.api.api_login_service import APILoginService
