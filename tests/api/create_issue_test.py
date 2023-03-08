@@ -1,9 +1,8 @@
-
 import json
 
 from src.jira_test_framework.api.api_login_service import APILoginService
 from src.logger import logger
-from tests.api.api_utils import valid_login
+
 from tests.api.constants import *
 
 createdIssueKey = None
@@ -11,7 +10,8 @@ api_login_service = APILoginService()
 
 
 def test_create_issue():
-    issue_service = valid_login(api_login_service)
+    issue_service = api_login_service.valid_login("IssueService")
+
     create_issue_request = insert_values_for_issue_request(True)
     response = issue_service.create_issue_issue(create_issue_request)
     assert response.status_code == 201
@@ -23,11 +23,12 @@ def test_create_issue():
     assert json.loads(response.content).get('key') == created_issue_key
     logger.info("issue with key: " + created_issue_key + " got successfully from server")
 
-
     """
     
     valid_issue_type - use for 2 different tests
     """
+
+
 def insert_values_for_issue_request(valid_issue_type, summary=SUMMARY):
     issue_request = {}
     fields = {}
@@ -61,4 +62,3 @@ def insert_values_for_issue_request(valid_issue_type, summary=SUMMARY):
 
     issue_request["fields"] = fields
     return issue_request
-

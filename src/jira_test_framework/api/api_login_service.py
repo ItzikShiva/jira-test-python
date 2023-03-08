@@ -2,10 +2,11 @@ import json
 import time
 
 import requests
-from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+from src.jira_test_framework.api.issue_service import IssueService
+from src.jira_test_framework.ui.driver_factory import get_chrome_driver
 from src.jira_test_framework.ui.get_token.get_token_login_page import GetTokenLoginPage
 from src.logger import logger
 
@@ -20,23 +21,41 @@ class APILoginService:
     REDIRECT_URI = "https://task-day.onrender.com/"
     driver = None
 
-    """
-    # Performs a series of actions to obtain an access token:
-    # 1. Logs in to a website.
-    # 2. Authorizes access.
-    # 3. Waits for the expected title to appear.
-    # 4. Obtains a code from the URL.
-    # 5. Exchanges the code for an access token.
-    # Returns the access token.
-    """
+    SERVICE_MAP = {
+        'IssueService': IssueService,
+        # 'board': BoardService,
+    }
+
+    def valid_login(self, service_name, scope=None):
+        """
+        This function handles the authentication process for accessing various Jira services.
+        It uses the get_token_process() method to obtain an access token from the Jira API,
+        :param service_name: the name of the service to be accessed from SERVICE_MAP
+        :param scope: optional - if not provide, will be "all" scope
+        :return: new instance of the service class. If the service name is invalid, it raises a ValueError.
+        """
+        self.get_token_process(scope)
+        service_class = self.SERVICE_MAP.get(service_name)
+        if service_class:
+            return service_class(self)
+        else:
+            raise ValueError(f"Unknown service name: {service_name}")
 
     def get_token_process(self, scope=None):
+        """
+        # Performs a series of actions to obtain an access token:
+        # 1. Logs in to a website.
+        # 2. Authorizes access.
+        # 3. Waits for the expected title to appear.
+        # 4. Obtains a code from the URL.
+        # 5. Exchanges the code for an access token.
+        # Returns the access token.
+        """
         logger.info("start get-token process")
-        self.driver = APILoginService.get_chrome_driver()
+        self.driver = get_chrome_driver()
 
         get_token_login_page = GetTokenLoginPage(self.driver)
 
-        #todo - ask - this is another option instead of if -  authorize_page = get_token_login_page.login(None if scope is None else scope)
         if scope is None:
             authorize_page = get_token_login_page.login()
         else:
@@ -70,15 +89,6 @@ class APILoginService:
         url = self.driver.current_url
         hash_index = url.find("#")
         return url[url.index("code=") + 5:hash_index]
-
-    # change / delete after:
-    @staticmethod
-    def get_chrome_driver() -> webdriver:
-        # this "option" because old writing is deprecated & to cancel an error of "USB: usb_device_handle..." 19-2-23
-        options = webdriver.ChromeOptions()
-        options.add_experimental_option('excludeSwitches', ['enable-logging'])
-        options.add_argument("--start-maximized")
-        return webdriver.Chrome(executable_path='C:\Drivers\chromedriver\chromedriver.exe', options=options)
 
     def get_access_token(self):
         logger.info("getting token from API")
