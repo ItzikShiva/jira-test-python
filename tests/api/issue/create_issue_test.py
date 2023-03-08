@@ -3,7 +3,7 @@ import json
 from src.jira_test_framework.api.api_login_service import APILoginService
 from src.logger import logger
 
-from tests.api.constants import *
+from tests.api.issue.constants import *
 
 createdIssueKey = None
 api_login_service = APILoginService()

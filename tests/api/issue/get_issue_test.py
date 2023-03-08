@@ -1,10 +1,9 @@
 import json
 
 from src.jira_test_framework.api.api_login_service import APILoginService
-from src.jira_test_framework.api.issue_service import IssueService
 from src.logger import logger
 # from tests.api.api_utils import valid_login
-from tests.api.constants import *
+from tests.api.issue.constants import *
 
 api_login_service = APILoginService()
 
