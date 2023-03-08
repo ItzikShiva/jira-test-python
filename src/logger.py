@@ -1,7 +1,6 @@
 import logging
 
 
-# Set up the logger
 def get_logger():
     logger = logging.getLogger(__name__)
     logger.setLevel(logging.INFO)
@@ -10,3 +9,6 @@ def get_logger():
     handler.setFormatter(formatter)
     logger.addHandler(handler)
     return logger
+
+
+logger = get_logger()

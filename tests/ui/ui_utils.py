@@ -1,12 +1,7 @@
-import logging
+from src.jira_test_framework.ui.login_page import LoginPage
+from tests.ui.constants import USERNAME, PASSWORD
 
 
-# Set up the logger
-def get_logger():
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-    formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-    handler = logging.StreamHandler()
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
-    return logger
+def ui_login(driver):
+    login_page = LoginPage(driver)
+    login_page.login(USERNAME, PASSWORD)
